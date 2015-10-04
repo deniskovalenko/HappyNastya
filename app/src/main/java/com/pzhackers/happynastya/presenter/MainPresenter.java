@@ -8,7 +8,6 @@ import com.pzhackers.happynastya.fragment.MainActivityFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,8 +16,9 @@ public class MainPresenter {
     MainActivityFragment fragment;
     ArrayList<String> adverbs;
     ArrayList<String> adjectives;
-    ArrayList<Drawable> photos;
-    private Random random = new Random();
+    String[] photos;
+    private Random randomWord = new Random();
+    private Random randomPhoto =  new Random();
 
     public MainPresenter(MainActivityFragment fragment) {
         this.fragment = fragment;
@@ -51,48 +51,44 @@ public class MainPresenter {
                     adverbs.add(adjective);
                 }
             }
-            int count = 1;
-            int elements = countPhotos();
-            while (count <= elements){
-                InputStream photosReader = openImageFile(count);
-                Drawable photo = Drawable.createFromStream(photosReader, null);
-                photos.add(photo);
-                count++;
-            }
+            openPhotos();
         } catch (Exception e) {
-            Toast.makeText(fragment.getContext(),"Failed to load words", Toast.LENGTH_LONG).show();
+            Toast.makeText(fragment.getContext(),"Failed to load words or photos", Toast.LENGTH_LONG).show();
         }
     }
 
     private String newAdverb() {
         int maxIndex = adverbs.size();
-        int randomIndex = random.nextInt(maxIndex);
+        int randomIndex = randomWord.nextInt(maxIndex);
         return adverbs.get(randomIndex);
     }
 
     private String newAdjective() {
         int maxIndex = adjectives.size();
-        int randomIndex = random.nextInt(maxIndex);
+        int randomIndex = randomWord.nextInt(maxIndex);
         return adjectives.get(randomIndex);
     }
 
     private Drawable newPhoto() {
-        int maxIndex = photos.size();
-        int randomIndex = random.nextInt(maxIndex);
-        return photos.get(randomIndex);
+        int maxIndex = photos.length;
+        int randomIndex = randomPhoto.nextInt(maxIndex);
+        Drawable photo = null;
+        try {
+             photo = Drawable.createFromPath(String.valueOf(fragment.getContext().getAssets().openFd("photo/" + photos[randomIndex])));
+        } catch (IOException e) {
+            Toast.makeText(fragment.getContext(),"Failed to create photo", Toast.LENGTH_LONG).show();
+        }
+        return photo;
     }
+
 
     private BufferedReader openTextFile(String name) throws IOException {
         AssetManager am = fragment.getContext().getAssets();
         return new BufferedReader(new InputStreamReader(am.open(name)));
     }
 
-    private InputStream openImageFile(int number) throws IOException {
-        return fragment.getContext().getAssets().open("photo/" + number + ".jpg");
-    }
-
-    private int countPhotos() throws IOException {
+    private void openPhotos() throws IOException {
         AssetManager am = fragment.getContext().getAssets();
-        return am.list("photo").length;
+        photos = am.list("photo");
     }
 }
