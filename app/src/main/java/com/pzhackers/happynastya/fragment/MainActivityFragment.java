@@ -1,6 +1,8 @@
 package com.pzhackers.happynastya.fragment;
 
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -52,6 +54,14 @@ public class MainActivityFragment extends Fragment {
     }
 
     public void setSentence(String adverb, String adjective){
-        text.setText("Ты " + adverb + " " + adjective + "!!!");
+        text.setText("Ты \n" + adverb + "\n " + adjective + "!!!");
+    }
+
+    public void setTextGradient(){
+        int[] color = {Color.WHITE,Color.GRAY};
+        float[] position = {0, 1};
+        Shader.TileMode tile_mode = Shader.TileMode.REPEAT;
+        LinearGradient lin_grad = new LinearGradient(0, 20, 0, 300, color, position, tile_mode);
+        text.getPaint().setShader(lin_grad);
     }
 }
