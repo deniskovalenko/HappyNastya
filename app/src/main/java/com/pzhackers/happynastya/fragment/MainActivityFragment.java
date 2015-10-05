@@ -53,6 +53,5 @@ public class MainActivityFragment extends Fragment {
 
     public void setSentence(String adverb, String adjective){
         text.setText("Ты " + adverb + " " + adjective + "!!!");
-        text.setShadowLayer(1, 0, 0, Color.BLACK);
     }
 }
