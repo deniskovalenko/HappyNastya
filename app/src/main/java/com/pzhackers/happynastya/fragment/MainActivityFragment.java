@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pzhackers.happynastya.R;
@@ -18,7 +19,7 @@ import com.pzhackers.happynastya.presenter.MainPresenter;
 public class MainActivityFragment extends Fragment {
 
     private TextView text;
-    private View background;
+    private ImageView background;
     private MainPresenter presenter;
 
     public MainActivityFragment() {
@@ -29,7 +30,7 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         text = (TextView) view.findViewById(R.id.text);
-        background = view.findViewById(R.id.bg_view);
+        background = (ImageView) view.findViewById(R.id.bg_view);
         background.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,11 +48,11 @@ public class MainActivityFragment extends Fragment {
     }
 
     public void setBackground(Drawable image){
-        background.setBackground(image);
+        background.setImageDrawable(image);
     }
 
     public void setSentence(String adverb, String adjective){
-        text.setText("Я " + adverb + " " + adjective + "!!!");
+        text.setText("Ты " + adverb + " " + adjective + "!!!");
         text.setShadowLayer(1, 0, 0, Color.BLACK);
     }
 }

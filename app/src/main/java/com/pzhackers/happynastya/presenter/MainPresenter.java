@@ -8,14 +8,15 @@ import com.pzhackers.happynastya.fragment.MainActivityFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class MainPresenter {
     MainActivityFragment fragment;
-    ArrayList<String> adverbs;
-    ArrayList<String> adjectives;
+    ArrayList<String> adverbs = new ArrayList<>();
+    ArrayList<String> adjectives = new ArrayList<>();
     String[] photos;
     private Random randomWord = new Random();
     private Random randomPhoto =  new Random();
@@ -40,18 +41,19 @@ public class MainPresenter {
             BufferedReader readerAdverbs = openTextFile("adverb.txt");
             while (readerAdverbs.ready()) {
                 String adverb = readerAdverbs.readLine();
-                if (!adverb.endsWith("ий") || !adverb.endsWith("ый")) {
+                if (!adverb.endsWith("ий") && !adverb.endsWith("ый") && !adverb.endsWith("ой")) {
                     adverbs.add(adverb);
                 }
             }
-            BufferedReader readerAdjectives = openTextFile("adverb.txt");
+            BufferedReader readerAdjectives = openTextFile("adjective.txt");
             while (readerAdjectives.ready()) {
                 String adjective = readerAdjectives.readLine();
-                if (adjective.endsWith("ий") && adjective.endsWith("ый")) {
-                    adverbs.add(adjective);
+                if (adjective.endsWith("ий") || adjective.endsWith("ый") || adjective.endsWith("ой")) {
+                    String womanAdjective = adjective.substring(0,adjective.length()-2) + "ая";
+                    adjectives.add(womanAdjective);
                 }
             }
-            openPhotos();
+            readPhotosName();
         } catch (Exception e) {
             Toast.makeText(fragment.getContext(),"Failed to load words or photos", Toast.LENGTH_LONG).show();
         }
@@ -74,7 +76,8 @@ public class MainPresenter {
         int randomIndex = randomPhoto.nextInt(maxIndex);
         Drawable photo = null;
         try {
-             photo = Drawable.createFromPath(String.valueOf(fragment.getContext().getAssets().openFd("photo/" + photos[randomIndex])));
+            InputStream stream = fragment.getContext().getAssets().open("photo/" + photos[randomIndex]);
+            photo = Drawable.createFromStream(stream, null);
         } catch (IOException e) {
             Toast.makeText(fragment.getContext(),"Failed to create photo", Toast.LENGTH_LONG).show();
         }
@@ -87,7 +90,7 @@ public class MainPresenter {
         return new BufferedReader(new InputStreamReader(am.open(name)));
     }
 
-    private void openPhotos() throws IOException {
+    private void readPhotosName() throws IOException {
         AssetManager am = fragment.getContext().getAssets();
         photos = am.list("photo");
     }
