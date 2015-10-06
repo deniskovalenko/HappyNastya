@@ -3,4 +3,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="copyright"><![CDATA[© 2015 Designer Masha. Programmers Slava & Lesha.]]></string>
+    <string name="photo">photo</string>
 </resources>

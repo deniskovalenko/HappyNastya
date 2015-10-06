@@ -23,6 +23,7 @@ public class MainPresenter {
 
     public MainPresenter(MainActivityFragment fragment) {
         this.fragment = fragment;
+        fragment.setTextGradient();
         init();
     }
 
@@ -34,7 +35,6 @@ public class MainPresenter {
 
         fragment.setBackground(image);
         fragment.setSentence(adverb, adjective);
-        fragment.setTextGradient();
     }
 
     private void init() {
