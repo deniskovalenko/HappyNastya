@@ -77,22 +77,22 @@ public class MainPresenter {
         int randomIndex = randomPhoto.nextInt(maxIndex);
         Drawable photo = null;
         try {
-            InputStream stream = fragment.getContext().getAssets().open("photo/" + photos[randomIndex]);
+            InputStream stream = fragment.getActivity().getAssets().open("photo/" + photos[randomIndex]);
             photo = Drawable.createFromStream(stream, null);
         } catch (IOException e) {
-            Toast.makeText(fragment.getContext(),"Failed to create photo", Toast.LENGTH_LONG).show();
+            Toast.makeText(fragment.getActivity(),"Failed to create photo", Toast.LENGTH_LONG).show();
         }
         return photo;
     }
 
 
     private BufferedReader openTextFile(String name) throws IOException {
-        AssetManager am = fragment.getContext().getAssets();
+        AssetManager am = fragment.getActivity().getAssets();
         return new BufferedReader(new InputStreamReader(am.open(name)));
     }
 
     private void readPhotosName() throws IOException {
-        AssetManager am = fragment.getContext().getAssets();
+        AssetManager am = fragment.getActivity().getAssets();
         photos = am.list("photo");
     }
 }
